@@ -16,7 +16,7 @@ const Receiver = ({ payload }:any) => {
       <div className='flex w-full border-b border-neutral-200 mb-5'>
         <span className='font-semibold text-xl'>Receiver</span>
       </div>
-      <ul className="bg-white rounded-md p-5 border border-neutral-300 min-h-[20rem] flex">
+      <ul className="bg-white rounded-md p-5 border border-neutral-300 h-[20rem] flex flex-col items-start overflow-y-auto">
         {
           messages.map((item:any) => (<li className="text-gray-800 mb-2 ">{JSON.stringify(item.data)}</li>))
         }

@@ -6,36 +6,24 @@ import Button from '../components/shared/Button';
 function VPOSPage() {
   const createMutation = useVPOS();
 
-  const [response, setResponse] = React.useState('');
-  const [response2, setResponse2] = React.useState('');
+  const [response, setResponse] = React.useState("");
   const [value, setValue] = React.useState('{"key":"value"}');
-
 
   const [loading, setLoading] = React.useState(false);
 
-  const onFinish = () => {
-    executeMutation(value);
+  const onFinish =  async () => {
+     executeMutation(value);
+      //fetch post 
+      // setLoading(true);
+      // const resp = await fetch('http://localhost:3333/api/vpos', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: value
+      // })
+        // setLoading(false);
   };
-
-  async function handleSubmitToApi(_data:any) {
-    try {
-      const postData = async () => {
-        const resp = await fetch('/api/vpos', {
-          method: 'POST',
-          body: JSON.stringify(_data),
-        });
-        return resp.json();
-      };
-      const _resp = await postData();
-
-      console.log(_resp);
-      setResponse(JSON.stringify(_resp?.data));
-      setResponse2(JSON.stringify(_resp?.data?.body) ?? '');
-    } catch (error) {
-      console.log(error);
-      setResponse(JSON.stringify(error));
-    }
-  }
 
   const executeMutation = async (_data:any) => {
     try {
@@ -43,7 +31,6 @@ function VPOSPage() {
       const resp = await createMutation.mutateAsync(_data);
       console.log({ resp });
       setResponse(JSON.stringify(resp?.data));
-      setResponse2(JSON.stringify(resp?.data?.body) ?? '');
     } catch (error) {
       console.log(error);
       setResponse(JSON.stringify(error));
@@ -51,7 +38,6 @@ function VPOSPage() {
       setLoading(false);
     }
   };
-
 
   return (
     <div className="p-5 flex flex-col space-y-5">
@@ -64,7 +50,7 @@ function VPOSPage() {
             onClick={() =>
               executeMutation({
                 accion: 'tarjeta',
-                montoTransaccion: 1000,
+                montoTransaccion: "1000",
                 cedula: '27769576',
               })
             }
@@ -102,41 +88,35 @@ function VPOSPage() {
       </Card>
       <Card className='p-5'>
         <div className='flex w-full border-b border-neutral-200 mb-5'>
-          <span className='font-semibold text-xl'>CUSTOM PAYLOAD</span>
+          <span className='font-semibold text-xl'>Custom payload</span>
         </div>
-       <input 
-          value={value} onChange={(e) => setValue(e.target.value)} 
-          type="textarea" className='w-full h-56  border border-neutral-300 rounded'
-        />
+        <textarea 
+          value={value} 
+          onChange={(e) => setValue(e.target.value)} 
+          className="block p-2.5 w-full h-[300px] text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 
+          focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 
+          dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+          >
+        </textarea>
         <div className='flex justify-evenly mt-5'>
           <Button onClick={() => {
             onFinish();
           }}>Submit</Button>
-          <Button
-            onClick={() =>
-              handleSubmitToApi(value)
-            }
-          >
-            Submit by api
-          </Button>
+      
         </div>
       </Card>
       <Card className='p-4 space-y-5'>
         <div className='flex w-full border-b border-neutral-200 mb-5'>
           <span className='font-semibold text-xl'>Response</span>
         </div>
-        <input
-          className="w-full h-32 border rounded"
-          type="textarea"
+        <textarea 
           value={loading ? 'Cargando...' : response}
           onChange={() => {}}
-        />
-        <input
-          type="textarea"
-          className="w-full h-32 border rounded"
-          value={loading ? 'Cargando...' : response2}
-          onChange={() => {}}
-        />
+          className="block p-2.5 w-full h-[300px] text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 
+          focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 
+          dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+          >
+        </textarea>
       </Card>
     </div>
   );

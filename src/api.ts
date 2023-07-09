@@ -1,8 +1,8 @@
 import Axios from 'axios';
 
 export const axios = Axios.create({
-  baseURL: 'http://localhost:8085/vpos',
-  withCredentials: true,
+  baseURL: 'http://localhost:3333/api/vpos/v1',
+  // withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
     'x-access-token':
@@ -11,7 +11,7 @@ export const axios = Axios.create({
 });
 
 export const axiosS3 = Axios.create({
-  baseURL: 'http://localhost:8085/vpos',
+  baseURL: 'http://localhost:3333/api/vpos/v1',
   headers: {
     'x-amz-acl': 'public-read',
   },
