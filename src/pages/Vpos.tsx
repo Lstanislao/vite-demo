@@ -2,6 +2,7 @@ import React from 'react';
 import { useVPOS } from '../lib/api/VPOS';
 import Card from '../components/shared/Card';
 import Button from '../components/shared/Button';
+import socket from '../lib/socket';
 
 function VPOSPage() {
   const createMutation = useVPOS();
@@ -12,17 +13,7 @@ function VPOSPage() {
   const [loading, setLoading] = React.useState(false);
 
   const onFinish =  async () => {
-     executeMutation(value);
-      //fetch post 
-      // setLoading(true);
-      // const resp = await fetch('http://localhost:3333/api/vpos', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: value
-      // })
-        // setLoading(false);
+    executeMutation(value);
   };
 
   const executeMutation = async (_data:any) => {
@@ -31,6 +22,18 @@ function VPOSPage() {
       const resp = await createMutation.mutateAsync(_data);
       console.log({ resp });
       setResponse(JSON.stringify(resp?.data));
+      // sent to queue
+      socket.emit('testEvent', {
+        DocumentRoute: resp.data.nombreVoucher,
+        DocumentType: 2,
+        RIF_CI: "",
+        Name: "",
+        NonFiscalLines: [],
+        DocumentHeaders: [],
+        DocumentBody: [],
+        BookingNumber: "",
+        BarcodeLines: []
+      });
     } catch (error) {
       console.log(error);
       setResponse(JSON.stringify(error));
