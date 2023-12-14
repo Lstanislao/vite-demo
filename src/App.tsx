@@ -1,12 +1,12 @@
-import './App.css'
+import './App.css';
+import TestingPage from './components/TestingPage';
 
 function App() {
-  
   return (
-     <h1 className="text-5xl">
-      Hello world!
-    </h1>
-  )
+    <div className="p-5 flex flex-col space-y-5">
+      <TestingPage />
+    </div>
+  );
 }
 
-export default App
+export default App;
